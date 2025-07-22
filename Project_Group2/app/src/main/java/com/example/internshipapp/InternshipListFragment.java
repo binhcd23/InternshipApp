@@ -72,42 +72,41 @@ public class InternshipListFragment extends Fragment {
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
                     internshipList.clear();
-                    String selectedField = spinnerFilter.getSelectedItem().toString();
-
                     for (QueryDocumentSnapshot doc : querySnapshot) {
                         Internship internship = doc.toObject(Internship.class);
 
-                        // Bỏ qua nếu không đúng lĩnh vực đã chọn
-                        if (!selectedField.equals("All") &&
-                                (internship.getField() == null ||
-                                        !internship.getField().equalsIgnoreCase(selectedField))) {
-                            continue;
-                        }
+                        String selectedField = spinnerFilter.getSelectedItem().toString();
+                        if (!selectedField.equals("All") && !internship.getField().equalsIgnoreCase(selectedField)) continue;
 
                         internshipList.add(internship);
                     }
 
-                    // Sắp xếp theo ngày
                     String sortOption = spinnerSort.getSelectedItem().toString();
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-                    internshipList.sort((a, b) -> {
-                        try {
-                            Date dateA = a.getDatePosted() != null ? sdf.parse(a.getDatePosted()) : null;
-                            Date dateB = b.getDatePosted() != null ? sdf.parse(b.getDatePosted()) : null;
-
-                            if (dateA == null || dateB == null) return 0;
-
-                            if (sortOption.equals("Date (Newest First)")) {
+                    if (sortOption.equals("Date (Newest First)")) {
+                        internshipList.sort((a, b) -> {
+                            try {
+                                Date dateA = sdf.parse(a.getDatePosted());
+                                Date dateB = sdf.parse(b.getDatePosted());
+                                assert dateB != null;
                                 return dateB.compareTo(dateA);
-                            } else if (sortOption.equals("Date (Oldest First)")) {
-                                return dateA.compareTo(dateB);
+                            } catch (ParseException e) {
+                                return 0;
                             }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        return 0;
-                    });
+                        });
+                    } else if(sortOption.equals("Date (Oldest First)")) {
+                        internshipList.sort((a, b) -> {
+                            try {
+                                Date dateA = sdf.parse(a.getDatePosted());
+                                Date dateB = sdf.parse(b.getDatePosted());
+                                assert dateA != null;
+                                return dateA.compareTo(dateB);
+                            } catch (ParseException e) {
+                                return 0;
+                            }
+                        });
+                    }
 
                     adapter.setData(internshipList);
                 })
@@ -115,6 +114,4 @@ public class InternshipListFragment extends Fragment {
                         Toast.makeText(getContext(), "Failed to load internships", Toast.LENGTH_SHORT).show());
     }
 
-
 }
-
