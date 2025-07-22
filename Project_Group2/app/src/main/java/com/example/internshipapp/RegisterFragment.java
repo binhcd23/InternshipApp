@@ -82,7 +82,7 @@ public class RegisterFragment extends Fragment {
                             });
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 

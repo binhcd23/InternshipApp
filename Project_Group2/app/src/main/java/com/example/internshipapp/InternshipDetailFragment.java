@@ -179,4 +179,3 @@ public class InternshipDetailFragment extends Fragment {
         textView.setText(spannable);
     }
 }
-

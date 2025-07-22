@@ -78,6 +78,33 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/btnCreateInternshipContainer"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_button_primary">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_add"
+            app:tint="#FFFFFF" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Internship"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/btnLogoutRecruiterContainer"
         android:layout_width="match_parent"
         android:layout_height="48dp"

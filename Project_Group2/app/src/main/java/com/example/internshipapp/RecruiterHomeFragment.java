@@ -32,6 +32,11 @@ public class RecruiterHomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recruiter_home, container, false);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         TextView tv = view.findViewById(R.id.tvWelcomeRecruiter);
+        LinearLayout btnCreateInternship = view.findViewById(R.id.btnCreateInternshipContainer);
+        btnCreateInternship.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_recruiterHome_to_createInternshipFragment);
+        });
+
 
         if (user != null) {
             FirebaseFirestore.getInstance().collection("users")
@@ -140,6 +145,10 @@ public class RecruiterHomeFragment extends Fragment {
                                 });
                     });
         });
+
+
+
+
         return view;
     }
 
@@ -147,7 +156,7 @@ public class RecruiterHomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        NotificationService.createNotificationChannel(requireContext());
+        NotificationService.createNotificationChannel(requireContext());
 
         SharedPreferences prefs = requireContext().getSharedPreferences("NotificationPrefs", Context.MODE_PRIVATE);
         int previousCount = prefs.getInt("pendingAppCount", 0);
@@ -159,12 +168,12 @@ public class RecruiterHomeFragment extends Fragment {
                     int currentCount = query.size();
 
                     if (currentCount > previousCount) {
-//                        NotificationService.showNotification(
-//                                requireContext(),
-//                                "New Applications",
-//                                "📥 You have " + currentCount + " new application(s).",
-//                                3
-//                        );
+                        NotificationService.showNotification(
+                                requireContext(),
+                                "New Applications",
+                                "📥 You have " + currentCount + " new application(s).",
+                                3
+                        );
 
                         prefs.edit().putInt("pendingAppCount", currentCount).apply();
                     }

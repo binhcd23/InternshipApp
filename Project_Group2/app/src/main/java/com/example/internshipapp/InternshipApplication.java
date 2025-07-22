@@ -5,6 +5,7 @@ public class InternshipApplication {
     private String title;
     private String company;
     private String status;
+
     public InternshipApplication() {}
 
     public String getId() { return id; }

@@ -112,6 +112,16 @@
     </fragment>
 
     <fragment
+        android:id="@+id/createInternshipFragment"
+        android:name="com.example.internshipapp.CreateInternshipFragment"
+        android:label="Create Internship" >
+    </fragment>
+
+    <action
+        android:id="@+id/action_recruiterHome_to_createInternshipFragment"
+        app:destination="@id/createInternshipFragment" />
+
+    <fragment
         android:id="@+id/interviewScheduleFragment"
         android:name="com.example.internshipapp.InterviewScheduleFragment"
         android:label="Interview Schedule" />

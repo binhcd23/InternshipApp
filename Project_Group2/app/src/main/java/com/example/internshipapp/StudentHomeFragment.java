@@ -59,7 +59,7 @@ public class StudentHomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        NotificationService.createNotificationChannel(requireContext());
+        NotificationService.createNotificationChannel(requireContext());
 
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         SharedPreferences prefs = requireContext().getSharedPreferences("NotificationPrefs", Context.MODE_PRIVATE);
@@ -74,11 +74,11 @@ public class StudentHomeFragment extends Fragment {
                         String status = doc.getString("status");
 
                         if ("Accepted".equals(status) && !notifiedAccepted) {
-//                            NotificationService.showNotification(requireContext(), "Interview Accepted", "🎉 Your interview has been accepted!", 1);
+                            NotificationService.showNotification(requireContext(), "Interview Accepted", "🎉 Your interview has been accepted!", 1);
                             prefs.edit().putBoolean("notifiedAccepted", true).apply();
                             break;
                         } else if ("Declined".equals(status) && !notifiedDeclined) {
-//                            NotificationService.showNotification(requireContext(), "Interview Declined", "❌ Your interview was declined.", 2);
+                            NotificationService.showNotification(requireContext(), "Interview Declined", "❌ Your interview was declined.", 2);
                             prefs.edit().putBoolean("notifiedDeclined", true).apply();
                             break;
                         }
