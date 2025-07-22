@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -134,8 +135,11 @@ public class RecruiterHomeFragment extends Fragment {
                                             if (snapshot.exists()) {
                                                 Bundle bundle = new Bundle();
                                                 bundle.putString("receiverId", studentId);
-                                                Navigation.findNavController(v)
-                                                        .navigate(R.id.action_recruiterHome_to_chatFragment, bundle);
+                                                NavController navController = Navigation.findNavController(v);
+                                                if (navController.getCurrentDestination() != null &&
+                                                        navController.getCurrentDestination().getId() == R.id.recruiterHomeFragment) {
+                                                    navController.navigate(R.id.action_recruiterHome_to_chatFragment, bundle);
+                                                }
                                             }
                                         });
                                     }

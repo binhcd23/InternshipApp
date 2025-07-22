@@ -18,7 +18,7 @@ import java.util.*;
 
 public class CreateInternshipFragment extends Fragment {
 
-    private EditText edtTitle, edtField, edtDescription, edtRental;
+    private EditText edtTitle, edtField, edtDescription, edtLocation;
     private TextView edtCompany, tvDatePosted;
     private Spinner spinnerDuration;
     private Button btnSubmitInternship;
@@ -35,13 +35,12 @@ public class CreateInternshipFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_create_internship, container, false);
 
-        // Khởi tạo View
         edtTitle = view.findViewById(R.id.edtTitle);
         edtCompany = view.findViewById(R.id.edtCompany);
         edtField = view.findViewById(R.id.edtField);
         edtDescription = view.findViewById(R.id.edtDescription);
         spinnerDuration = view.findViewById(R.id.spinnerDuration);
-        edtRental = view.findViewById(R.id.edtRental);
+        edtLocation = view.findViewById(R.id.edtLocation);
         tvDatePosted = view.findViewById(R.id.tvDatePosted);
         btnSubmitInternship = view.findViewById(R.id.btnSubmitInternship);
 
@@ -82,11 +81,11 @@ public class CreateInternshipFragment extends Fragment {
         String field = edtField.getText().toString().trim();
         String description = edtDescription.getText().toString().trim();
         String duration = spinnerDuration.getSelectedItem().toString();
-        String rental = edtRental.getText().toString().trim();
+        String location = edtLocation.getText().toString().trim();
         String datePosted = tvDatePosted.getText().toString().replace("Date Posted: ", "").trim();
         String recruiterId = mAuth.getCurrentUser().getUid();
 
-        if (title.isEmpty() || field.isEmpty() || description.isEmpty() || rental.isEmpty()) {
+        if (title.isEmpty() || field.isEmpty() || description.isEmpty() || location.isEmpty()) {
             Toast.makeText(getActivity(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -97,8 +96,8 @@ public class CreateInternshipFragment extends Fragment {
         internship.put("field", field);
         internship.put("description", description);
         internship.put("duration", duration);
-        internship.put("rental", rental);
-        internship.put("datepost", datePosted);
+        internship.put("location", location);
+        internship.put("datePosted", datePosted);
         internship.put("recruiterId", recruiterId);
 
         db.collection("internships")
