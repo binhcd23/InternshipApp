@@ -79,27 +79,39 @@ public class ChatFragment extends Fragment {
 
 
     private void setupChat() {
-        String chatId = studentId + "_" + recruiterId;
+        try {
+            String chatId = studentId + "_" + recruiterId;
 
-        chatRef = FirebaseDatabase.getInstance().getReference("Chats")
-                .child(chatId).child("messages");
+            chatRef = FirebaseDatabase.getInstance().getReference("Chats")
+                    .child(chatId).child("messages");
 
-        chatAdapter = new ChatAdapter(messageList, FirebaseAuth.getInstance().getCurrentUser().getUid());
-        recyclerChat.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerChat.setAdapter(chatAdapter);
+            chatAdapter = new ChatAdapter(messageList, FirebaseAuth.getInstance().getCurrentUser().getUid());
+            recyclerChat.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerChat.setAdapter(chatAdapter);
 
-        listenForMessages();
+            listenForMessages();
 
-        btnSend.setOnClickListener(v -> {
-            String message = edtMessage.getText().toString().trim();
-            if (!TextUtils.isEmpty(message)) {
-                sendMessage(FirebaseAuth.getInstance().getCurrentUser().getUid(),  // người gửi là current user
-                        FirebaseAuth.getInstance().getCurrentUser().getUid().equals(studentId) ? recruiterId : studentId,  // người nhận
-                        message);
-                edtMessage.setText("");
-            }
-        });
+            btnSend.setOnClickListener(v -> {
+                try {
+                    String message = edtMessage.getText().toString().trim();
+                    if (!TextUtils.isEmpty(message)) {
+                        sendMessage(
+                                FirebaseAuth.getInstance().getCurrentUser().getUid(),  // người gửi
+                                FirebaseAuth.getInstance().getCurrentUser().getUid().equals(studentId) ? recruiterId : studentId,  // người nhận
+                                message
+                        );
+                        edtMessage.setText("");
+                    }
+                } catch (Exception e) {
+                    Log.e("ChatSendError", "Lỗi khi gửi tin nhắn: " + e.getMessage(), e);
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("ChatSetupError", "Lỗi khi setup chat: " + e.getMessage(), e);
+        }
     }
+
 
 
     private void listenForMessages() {

@@ -1,23 +1,31 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="16dp"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:padding="8dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
 
-    <Spinner
-        android:id="@+id/spinnerFilter"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp" />
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <Spinner
-        android:id="@+id/spinnerSort"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp" />
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Internship Title"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewInternships"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/imageViewEdit"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@android:drawable/ic_menu_edit"
+        android:contentDescription="Edit"
+        android:padding="4dp" />
 </LinearLayout>

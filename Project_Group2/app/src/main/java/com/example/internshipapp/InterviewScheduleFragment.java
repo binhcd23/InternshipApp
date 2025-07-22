@@ -99,8 +99,6 @@ public class InterviewScheduleFragment extends Fragment {
         tvRoleNotice.setText("You are reviewing an interview proposal");
         btnPickDateTime.setVisibility(View.GONE);
         btnConfirmSchedule.setVisibility(View.GONE);
-        btnAccept.setVisibility(View.VISIBLE);
-        btnDecline.setVisibility(View.VISIBLE);
 
         String docId = userId + "_" + internshipId;
 
@@ -110,10 +108,21 @@ public class InterviewScheduleFragment extends Fragment {
                 .addOnSuccessListener(doc -> {
                     if (doc.exists()) {
                         String time = doc.getString("interviewTime");
+                        String status = doc.getString("status");
+
                         if (time != null) {
                             tvSelectedDateTime.setText("Proposed Time: " + time);
                         } else {
                             tvSelectedDateTime.setText("No interview time proposed.");
+                        }
+
+                        if (status != null && (status.equals("Accepted") || status.equals("Declined"))) {
+                            btnAccept.setVisibility(View.GONE);
+                            btnDecline.setVisibility(View.GONE);
+                            tvSelectedDateTime.setText("Interview " + status);
+                        } else {
+                            btnAccept.setVisibility(View.VISIBLE);
+                            btnDecline.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -122,14 +131,23 @@ public class InterviewScheduleFragment extends Fragment {
         btnDecline.setOnClickListener(v -> updateStatus("Declined"));
     }
 
+
     private void updateStatus(String status) {
         String docId = userId + "_" + internshipId;
 
         FirebaseFirestore.getInstance().collection("applications")
                 .document(docId)
                 .update("status", status)
-                .addOnSuccessListener(unused -> Toast.makeText(getContext(), "Interview " + status, Toast.LENGTH_SHORT).show());
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(getContext(), "Interview " + status, Toast.LENGTH_SHORT).show();
+
+                    btnAccept.setVisibility(View.GONE);
+                    btnDecline.setVisibility(View.GONE);
+
+                    tvSelectedDateTime.setText("Interview " + status);
+                });
     }
+
 
     private void updateLabel() {
         SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d yyyy - HH:mm", Locale.getDefault());

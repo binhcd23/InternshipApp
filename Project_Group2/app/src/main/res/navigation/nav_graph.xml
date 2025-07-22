@@ -115,7 +115,12 @@
         android:id="@+id/createInternshipFragment"
         android:name="com.example.internshipapp.CreateInternshipFragment"
         android:label="Create Internship" >
+
+        <action
+            android:id="@+id/action_createInternshipFragment_to_recruiterHomeFragment"
+            app:destination="@id/recruiterHomeFragment" />
     </fragment>
+
 
     <action
         android:id="@+id/action_recruiterHome_to_createInternshipFragment"

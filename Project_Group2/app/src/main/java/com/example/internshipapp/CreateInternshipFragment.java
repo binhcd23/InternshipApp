@@ -7,6 +7,8 @@ import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -103,13 +105,12 @@ public class CreateInternshipFragment extends Fragment {
                 .add(internship)
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(getActivity(), "Internship posted successfully", Toast.LENGTH_SHORT).show();
-                    requireActivity().getSupportFragmentManager()
-                            .beginTransaction()
-//                            .replace(R.id.fragment_container, new MainFragment()) // Chỉnh lại nếu cần
-                            .commit();
+                    NavController navController = NavHostFragment.findNavController(CreateInternshipFragment.this);
+                    navController.navigate(R.id.action_createInternshipFragment_to_recruiterHomeFragment);
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(getActivity(), "Failed to post internship", Toast.LENGTH_SHORT).show();
                 });
     }
+
 }

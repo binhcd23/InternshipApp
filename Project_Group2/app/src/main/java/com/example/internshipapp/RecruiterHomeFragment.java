@@ -94,7 +94,6 @@ public class RecruiterHomeFragment extends Fragment {
             String recruiterId1 = user1.getUid();
             DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
 
-            // Bước 1: Lấy tất cả internship thuộc recruiter
             FirebaseFirestore.getInstance().collection("internships")
                     .whereEqualTo("recruiterId", recruiterId1)
                     .get()
@@ -113,7 +112,7 @@ public class RecruiterHomeFragment extends Fragment {
                         // Bước 2: Lấy ứng viên đã Apply vào internship này
                         FirebaseFirestore.getInstance().collection("applications")
                                 .whereIn("internshipId", internshipIds)
-                                .whereEqualTo("status", "Accepted") // Chỉ lấy ứng viên đã nộp
+                                .whereEqualTo("status", "Accepted")
                                 .get()
                                 .addOnSuccessListener(appSnapshot -> {
                                     List<String> studentIds = new ArrayList<>();
@@ -127,16 +126,14 @@ public class RecruiterHomeFragment extends Fragment {
                                         return;
                                     }
 
-                                    // Bước 3: Duyệt qua studentIds để kiểm tra ai đã gửi tin nhắn (dùng Realtime DB)
                                     for (String studentId : studentIds) {
                                         String chatId = studentId + "_" + recruiterId1;
                                         DatabaseReference chatRef = dbRef.child("Chats").child(chatId).child("messages");
 
                                         chatRef.limitToFirst(1).get().addOnSuccessListener(snapshot -> {
                                             if (snapshot.exists()) {
-                                                // Nếu có tin nhắn thì mở chat với student này
                                                 Bundle bundle = new Bundle();
-                                                bundle.putString("receiverId", studentId);  // recruiter trả lời student
+                                                bundle.putString("receiverId", studentId);
                                                 Navigation.findNavController(v)
                                                         .navigate(R.id.action_recruiterHome_to_chatFragment, bundle);
                                             }
