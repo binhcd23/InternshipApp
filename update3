@@ -1,0 +1,112 @@
+package com.example.internshipapp;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+public class InterviewPrepFragment extends Fragment {
+
+    private Spinner spinnerCategory;
+    private Button btnStart, btnNext;
+    private TextView tvMockQuestion;
+
+    private final Map<String, List<String>> categorizedQuestions = new HashMap<>();
+    private int currentQuestionIndex = -1;
+    private List<String> currentQuestions = null;
+
+    public InterviewPrepFragment() {}
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_interview_prep, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        spinnerCategory = view.findViewById(R.id.spinnerCategory);
+        btnStart = view.findViewById(R.id.btnStartMockInterview);
+        btnNext = view.findViewById(R.id.btnNextQuestion);
+        tvMockQuestion = view.findViewById(R.id.tvMockQuestion);
+
+        setupQuestions();
+        setupSpinner();
+
+        btnStart.setOnClickListener(v -> {
+            String selectedCategory = spinnerCategory.getSelectedItem().toString();
+            currentQuestions = categorizedQuestions.get(selectedCategory);
+            if (currentQuestions != null && !currentQuestions.isEmpty()) {
+                btnNext.setVisibility(View.VISIBLE);
+                tvMockQuestion.setVisibility(View.VISIBLE);
+                showNextQuestion();
+            }
+        });
+
+        btnNext.setOnClickListener(v -> showNextQuestion());
+    }
+
+    private void setupQuestions() {
+        categorizedQuestions.put("IT", Arrays.asList(
+                "Bạn biết ngôn ngữ lập trình nào?",
+                "Giải thích nguyên lý SOLID.",
+                "Bạn đã từng làm dự án nhóm sử dụng Git chưa?",
+                "Sự khác nhau giữa ArrayList và LinkedList là gì?",
+                "OOP là gì và bạn đã áp dụng thế nào?"
+        ));
+
+        categorizedQuestions.put("language", Arrays.asList(
+                "Hãy giới thiệu bản thân bằng tiếng Anh.",
+                "Bạn đánh giá kỹ năng nghe của mình thế nào?",
+                "Bạn đã từng học ngôn ngữ nào khác ngoài tiếng Anh chưa?",
+                "Cách bạn cải thiện khả năng nói là gì?",
+                "Bạn thích đọc sách hay xem video khi học ngoại ngữ?"
+        ));
+
+        categorizedQuestions.put("Banking", Arrays.asList(
+                "Bạn hiểu gì về nghiệp vụ tín dụng?",
+                "Thế nào là rủi ro tài chính?",
+                "Làm thế nào để xử lý khi khách hàng không trả nợ đúng hạn?",
+                "Bạn có biết quy trình mở tài khoản ngân hàng không?",
+                "Sự khác nhau giữa tài khoản thanh toán và tài khoản tiết kiệm là gì?"
+        ));
+    }
+
+    private void setupSpinner() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                Arrays.asList("IT", "language", "Banking")
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategory.setAdapter(adapter);
+    }
+
+    private void showNextQuestion() {
+        if (currentQuestions == null || currentQuestions.isEmpty()) return;
+
+        Random random = new Random();
+        int newIndex;
+        do {
+            newIndex = random.nextInt(currentQuestions.size());
+        } while (newIndex == currentQuestionIndex && currentQuestions.size() > 1);
+        currentQuestionIndex = newIndex;
+
+        tvMockQuestion.setText(currentQuestions.get(currentQuestionIndex));
+    }
+}
