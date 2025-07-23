@@ -10,14 +10,17 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
     private List<ApplicationItem> applications;
     private final OnWithdrawClick withdrawClick;
     private final OnScheduleClick scheduleClick;
+    private final OnItemClickListener itemClickListener;
 
     public interface OnWithdrawClick { void onWithdraw(ApplicationItem app); }
     public interface OnScheduleClick { void onSchedule(ApplicationItem app); }
+    public interface OnItemClickListener { void onItemClick(ApplicationItem app); }
 
-    public ApplicationAdapter(List<ApplicationItem> apps, OnWithdrawClick wc, OnScheduleClick sc) {
+    public ApplicationAdapter(List<ApplicationItem> apps, OnWithdrawClick wc, OnScheduleClick sc, OnItemClickListener icl) {
         this.applications = apps;
         this.withdrawClick = wc;
         this.scheduleClick = sc;
+        this.itemClickListener = icl;
     }
 
     public void setData(List<ApplicationItem> newData) {
@@ -39,8 +42,23 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ApplicationAdapter.
         holder.tvInternshipId.setText("Internship: " + item.getInternshipId());
         holder.tvStatus.setText("Status: " + item.getStatus());
 
-        holder.btnWithdraw.setOnClickListener(v -> withdrawClick.onWithdraw(item));
+        if ("Withdrawn".equalsIgnoreCase(item.getStatus())) {
+            holder.btnWithdraw.setVisibility(View.GONE);
+            holder.tvStatus.setTextColor(0xFF888888); // xám
+            holder.btnSchedule.setVisibility(View.GONE);
+        } else if ("Declined".equalsIgnoreCase(item.getStatus())) {
+            holder.btnSchedule.setVisibility(View.GONE);
+            holder.btnWithdraw.setVisibility(View.VISIBLE);
+            holder.tvStatus.setTextColor(0xFF000000); // đen
+            holder.btnWithdraw.setOnClickListener(v -> withdrawClick.onWithdraw(item));
+        } else {
+            holder.btnWithdraw.setVisibility(View.VISIBLE);
+            holder.tvStatus.setTextColor(0xFF000000); // đen
+            holder.btnWithdraw.setOnClickListener(v -> withdrawClick.onWithdraw(item));
+            holder.btnSchedule.setVisibility(View.VISIBLE);
+        }
         holder.btnSchedule.setOnClickListener(v -> scheduleClick.onSchedule(item));
+        holder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(item));
     }
 
     @Override
