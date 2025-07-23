@@ -40,7 +40,7 @@
             android:minLines="3" />
 
         <EditText
-            android:id="@+id/edtLocation"
+            android:id="@+id/edtRental"
             android:hint="Location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

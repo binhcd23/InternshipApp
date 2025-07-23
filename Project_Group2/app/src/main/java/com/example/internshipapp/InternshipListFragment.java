@@ -87,39 +87,26 @@ public class InternshipListFragment extends Fragment {
                     if (sortOption.equals("Date (Newest First)")) {
                         internshipList.sort((a, b) -> {
                             try {
-                                String dateStrA = a.getDatePosted();
-                                String dateStrB = b.getDatePosted();
-
-                                if (dateStrA == null || dateStrB == null || dateStrA.isEmpty() || dateStrB.isEmpty())
-                                    return 0;
-
-                                Date dateA = sdf.parse(dateStrA);
-                                Date dateB = sdf.parse(dateStrB);
-
-                                return dateB.compareTo(dateA); // Newest first
+                                Date dateA = sdf.parse(a.getDatePosted());
+                                Date dateB = sdf.parse(b.getDatePosted());
+                                assert dateB != null;
+                                return dateB.compareTo(dateA);
                             } catch (ParseException e) {
                                 return 0;
                             }
                         });
-                    } else if (sortOption.equals("Date (Oldest First)")) {
+                    } else if(sortOption.equals("Date (Oldest First)")) {
                         internshipList.sort((a, b) -> {
                             try {
-                                String dateStrA = a.getDatePosted();
-                                String dateStrB = b.getDatePosted();
-
-                                if (dateStrA == null || dateStrB == null || dateStrA.isEmpty() || dateStrB.isEmpty())
-                                    return 0;
-
-                                Date dateA = sdf.parse(dateStrA);
-                                Date dateB = sdf.parse(dateStrB);
-
+                                Date dateA = sdf.parse(a.getDatePosted());
+                                Date dateB = sdf.parse(b.getDatePosted());
+                                assert dateA != null;
                                 return dateA.compareTo(dateB);
                             } catch (ParseException e) {
                                 return 0;
                             }
                         });
                     }
-
 
                     adapter.setData(internshipList);
                 })
