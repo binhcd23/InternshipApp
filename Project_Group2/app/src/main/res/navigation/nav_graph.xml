@@ -109,6 +109,15 @@
         <action
             android:id="@+id/action_applicationHistory_to_interviewScheduleFragment"
             app:destination="@id/interviewScheduleFragment" />
+        <action
+            android:id="@+id/action_applicationHistory_to_applicationDetailFragment"
+            app:destination="@id/applicationDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/applicationDetailFragment"
+        android:name="com.example.internshipapp.ApplicationDetailFragment"
+        android:label="Application Detail">
     </fragment>
 
     <fragment
